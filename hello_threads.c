@@ -30,7 +30,7 @@ int main()
      * and initialize it using the attr_init function before passing it to pthread_create.
      */
     pthread_attr_t attr;
-    attr_init(&attr);
+    pthread_attr_init(&attr);
 
     // pthread_create is a function that creates a new thread in the program.
     // It takes four arguments:
@@ -44,9 +44,17 @@ int main()
     pthread_create(&thread1, &attr, hello_message, (void *)1);
     pthread_create(&thread2, &attr, hello_message, (void *)2);
 
-    for (int i = 0; i < 10; i++)
+    if (thread1 != 0)
     {
-        printf("Hello from main thread\n");
+        printf("Created thread 1 with id: %lu\n", (unsigned long)thread1);
+    }
+    if (thread2 != 0)
+    {
+        printf("Created thread 2 with id: %lu\n", (unsigned long)thread2);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        printf("Hello from the main thread\n");
     }
     return 0;
 }

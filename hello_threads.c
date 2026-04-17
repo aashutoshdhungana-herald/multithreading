@@ -38,6 +38,9 @@ int main()
     // 2. A pointer to a pthread_attr_t variable that specifies the attributes of the thread (or NULL for default attributes).
     // 3. A pointer to the function that the thread will execute (the thread's start routine).
     // 4. A pointer to the argument that will be passed to the thread's start routine (or NULL if no argument is needed).
+    // These threads are created after the function call, but they may not start executing immediately.
+    // The scheduling of threads is determined by the operating system,
+    // and they may run concurrently with the main thread.
     pthread_create(&thread1, &attr, hello_message, (void *)1);
     pthread_create(&thread2, &attr, hello_message, (void *)2);
 

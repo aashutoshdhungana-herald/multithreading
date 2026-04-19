@@ -16,5 +16,6 @@ int main()
     {
         printf("Created thread with id: %lu\n", (unsigned long)id);
     }
+    pthread_join(id, NULL);
     return 0;
 }

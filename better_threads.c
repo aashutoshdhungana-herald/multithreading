@@ -1,7 +1,6 @@
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <pthread.h>
 
 typedef struct
 {
@@ -26,6 +25,7 @@ void *sum_to_n(void *arg)
 int main(int argc, char *argv[])
 {
     clock_t start = clock();
+
     if (argc < 2)
     {
         printf("Pass the total number to sum\n");
@@ -33,28 +33,29 @@ int main(int argc, char *argv[])
     }
     long long n = atoll(argv[1]);
 
-    pthread_t thread1, thread2, thread3;
-    ThreadData data1, data2, data3;
+    int num_threads = 8;
+    pthread_t threads[num_threads];
+    ThreadData thread_data[num_threads];
 
-    // Divide the task to three threads
-    data1.start = 0;
-    data1.end = n / 3;
+    // Divide the task among the threads
+    for (int i = 0; i < num_threads; i++)
+    {
+        thread_data[i].start = i * (n / num_threads);
+        thread_data[i].end = (i + 1) * (n / num_threads);
+        if (i == num_threads - 1)
+        {
+            thread_data[i].end = n;
+        }
+        pthread_create(&threads[i], NULL, sum_to_n, &thread_data[i]);
+    }
 
-    data2.start = n / 3;
-    data2.end = 2 * n / 3;
+    long long total_sum = 0;
+    for (int i = 0; i < num_threads; i++)
+    {
+        pthread_join(threads[i], NULL);
+        total_sum += thread_data[i].sum;
+    }
 
-    data3.start = 2 * n / 3;
-    data3.end = n;
-
-    pthread_create(&thread1, NULL, sum_to_n, &data1);
-    pthread_create(&thread2, NULL, sum_to_n, &data2);
-    pthread_create(&thread3, NULL, sum_to_n, &data3);
-
-    pthread_join(thread1, NULL);
-    pthread_join(thread2, NULL);
-    pthread_join(thread3, NULL);
-
-    long long total_sum = data1.sum + data2.sum + data3.sum;
     printf("Total Sum: %lld\n", total_sum);
     clock_t end = clock();
     double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;

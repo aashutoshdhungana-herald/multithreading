@@ -25,7 +25,9 @@ void *sum_to_n(void *arg)
 
 int main(int argc, char *argv[])
 {
-    clock_t start = clock();
+    clock_t start, end;
+    time(&start);
+
     if (argc < 2)
     {
         printf("Pass the total number to sum\n");
@@ -56,8 +58,8 @@ int main(int argc, char *argv[])
 
     long long total_sum = data1.sum + data2.sum + data3.sum;
     printf("Total Sum: %lld\n", total_sum);
-    clock_t end = clock();
-    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("CPU Time Used: %f seconds\n", cpu_time_used);
+    time(&end);
+    double total_time_ellapsed = difftime(end, start);
+    printf("Total Time Elapsed: %f seconds\n", total_time_ellapsed);
     return 0;
 }

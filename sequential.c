@@ -4,8 +4,9 @@
 
 int main(int argc, char *argv[])
 {
-    // time measurement
-    clock_t start = clock();
+    // total time elapsed for the entire program
+    time_t start, end;
+    time(&start);
 
     if (argc < 2)
     {
@@ -22,9 +23,9 @@ int main(int argc, char *argv[])
 
     printf("Total Sum: %lld\n", total_sum);
 
-    clock_t end = clock();
-    double cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-    printf("CPU Time Used: %f seconds\n", cpu_time_used);
+    time(&end);
+    double total_time_ellapsed = difftime(end, start);
+    printf("Total Time Elapsed: %f seconds\n", total_time_ellapsed);
 
     return 0;
 }
